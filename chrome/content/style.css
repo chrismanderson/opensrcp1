@@ -1,0 +1,40 @@
+#mainWindow {
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+	display: block;
+	font-color: #333;
+	line-height = 1.5;
+}
+
+.albuminfo {
+	background-color; "grey";
+	font-weight; bold;
+}
+
+.albumName {
+	font-size: 2em;
+	font-weight: 600;
+}
+
+.albumArtist {
+	font-size: 2em;
+	font-weight: 200;
+}
+
+.album {
+	border 
+}
+
+#abox {
+	border: solid thick;
+}
+
+.album:nth-child(odd)    { background-color:#fff; }
+.album:nth-child(even)    { background-color:#D8E7F3; }
+
+#songlist {
+/*	display: none;*/
+}
+
+
+div { border:2px solid blue; color:red; margin:3px; }
+p { border:2px solid red; color:blue; margin:3px; cursor:pointer; }

@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="style.css" type="text/css"?>
+<window id="mainWindow" title="Hello"
+  xmlns:html="http://www.w3.org/1999/xhtml"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<script type="application/x-javascript" src="jquery-xul.js" />
+
+<script>
+
+
+$(document).ready(function() { 
+
+	$(".album").click(function () {
+	  toggleVisibility(document.getElementById('songlist')));
+	});
+});
+
+
+function toggleVisibility(id) {
+	alert("hello!");
+	if (id.hidden == true) {
+		id.hidden = false;
+	}
+	else {
+		id.hidden = true;
+	}
+}
+</script>
+
+<box>
+<box id="albumList" orient="vertical">
+	<box align="left" class="album"  orient="vertical">
+		<box flex="1" id="test"><description value="Album 1" class="albumName" /><label class="albumArtist" value="Album artist 1"/></box>
+		<box><label value="Year of release"/><label value="Genre"/></box>
+			
+		<listbox align="left" id="songlist" hidden="true">
+			<listitem label="Song 1"/>
+			<listitem label="Song 2"/>
+			<listitem label="Song 3"/>
+			<listitem label="Song 3"/>
+			<listitem label="Song 5"/>
+		</listbox>
+	</box>
+	
+	<box align="left" class="album" orient="vertical">
+		<box flex="1"><description value="Album 1" class="albumName" /><label class="albumArtist" value="Album artist 1"/></box>
+		<box><label value="Year of release"/><label value="Genre"/></box>
+		
+		<listbox align="left" id="songlist" hidden="true">
+			<listitem label="Song 1"/>
+			<listitem label="Song 2"/>
+			<listitem label="Song 3"/>
+			<listitem label="Song 3"/>
+			<listitem label="Song 5"/>
+		</listbox>
+	</box>
+</box>
+
+
+</box>
+<box id="aBox" class="red" width="200">
+  <button id="button" label="Add" oncommand="toggleVisibility(document.getElementById('songlist'));"/>
+</box>
+
+
+
+</window>
