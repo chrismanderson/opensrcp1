@@ -9,20 +9,21 @@
 
 
 $(document).ready(function() { 
-
 	$(".album").click(function () {
-	  toggleVisibility(document.getElementById('songlist')));
+	  	toggleVisibility(this);
 	});
 });
 
 
 function toggleVisibility(id) {
-	alert("hello!");
-	if (id.hidden == true) {
-		id.hidden = false;
+
+	var list = $(id).children("#songlist").attr("collapsed");
+		
+	if (list == 'true') {
+		$(id).children("#songlist").attr('collapsed','false');
 	}
 	else {
-		id.hidden = true;
+		$(id).children("#songlist").attr('collapsed','true');
 	}
 }
 </script>
@@ -33,7 +34,7 @@ function toggleVisibility(id) {
 		<box flex="1" id="test"><description value="Album 1" class="albumName" /><label class="albumArtist" value="Album artist 1"/></box>
 		<box><label value="Year of release"/><label value="Genre"/></box>
 			
-		<listbox align="left" id="songlist" hidden="true">
+		<listbox align="left" id="songlist" collapsed="true">
 			<listitem label="Song 1"/>
 			<listitem label="Song 2"/>
 			<listitem label="Song 3"/>
@@ -46,7 +47,7 @@ function toggleVisibility(id) {
 		<box flex="1"><description value="Album 1" class="albumName" /><label class="albumArtist" value="Album artist 1"/></box>
 		<box><label value="Year of release"/><label value="Genre"/></box>
 		
-		<listbox align="left" id="songlist" hidden="true">
+		<listbox align="left" id="songlist" collapsed="true">
 			<listitem label="Song 1"/>
 			<listitem label="Song 2"/>
 			<listitem label="Song 3"/>
