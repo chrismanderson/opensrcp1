@@ -8,46 +8,106 @@
 <script>
 
 
+
 $(document).ready(function() { 
-	$(".album").click(function () {
-	  	toggleVisibility(this);
-	});
+	// $(".album").click(function () {
+	//   	toggleVisibility(this);
+	// });
+	
+
+	
+	var songs = new Array();
+	songs[0] = "song1";
+	songs[1] = "song2";
+	
+	var album1 = new album("Hello","Goodbye","hello",songs,5);
+	var album2 = new album("Goodbye","hello","teehee",songs,5);
 });
 
+$(document).delegate('.album','click',function(){
+	toggleVisibility(this);
+});
 
+//toggles the visibility on the song list
 function toggleVisibility(id) {
 
-	var list = $(id).children("#songlist").attr("collapsed");
+	// drawAlbum();
+	var list = $(id).children(".songlist").attr("collapsed");
 		
 	if (list == 'true') {
-		$(id).children("#songlist").attr('collapsed','false');
+		$(id).children(".songlist").attr('collapsed','false');
 	}
 	else {
-		$(id).children("#songlist").attr('collapsed','true');
+		$(id).children(".songlist").attr('collapsed','true');
 	}
 }
+
+function album(title,artist,genre,songs,rating) {
+	this.title = title;
+	this.artist = artist;
+	this.genre = genre;
+	// this.rating = rating;
+	var songlist = new Array();
+	this.songlist = songs;
+	this.rating = rating;
+}
+
+function drawAlbum() {
+	var newBoxAlbum = document.createElement("box");
+	newBoxAlbum.setAttribute('class','album');
+	newBoxAlbum.setAttribute('orient','vertical');
+	
+	var newBoxAlbumInfo = document.createElement("box");
+	newBoxAlbumInfo.setAttribute('flex','1');
+	newBoxAlbumInfo.setAttribute('label','Album2');
+	
+	newBoxAlbum.appendChild(newBoxAlbumInfo);
+	
+	
+	container = document.getElementById("albumList");
+	container.appendChild(newBoxAlbum);
+}
+
 </script>
 
-<box>
-<box id="albumList" orient="vertical">
+
+<box id="albumList" orient="vertical" datasources="list.xml" ref="*" querytype="xml">  
+  <template>  
+    <query expr="*" />  
+    <action>  
+    	<box uri="?" align="left" class="album"  orient="vertical">  
+			<box flex="1">
+        		<description class="albumName" value="?name"/>  
+        		<label class="albumArtist" value="?artist"/>
+      		</box>  
+			<listbox class="songlist" align="left" collapsed="true">
+				<listitem  uri="?" label="?title"/>
+			</listbox>
+		</box>
+    </action>  
+  </template>  
+</box>
+
+<!-- <box id="albumList" orient="vertical">
 	<box align="left" class="album"  orient="vertical">
 		<box flex="1" id="test"><description value="Album 1" class="albumName" /><label class="albumArtist" value="Album artist 1"/></box>
 		<box><label value="Year of release"/><label value="Genre"/></box>
 			
-		<listbox align="left" id="songlist" collapsed="true">
+		<listbox align="left" class="songlist" collapsed="true">
 			<listitem label="Song 1"/>
 			<listitem label="Song 2"/>
 			<listitem label="Song 3"/>
 			<listitem label="Song 3"/>
 			<listitem label="Song 5"/>
 		</listbox>
+		<button class="edit" label="Edit" />
 	</box>
 	
-	<box align="left" class="album" orient="vertical">
+	<box align="left" flex="1" class="album" orient="vertical">
 		<box flex="1"><description value="Album 1" class="albumName" /><label class="albumArtist" value="Album artist 1"/></box>
 		<box><label value="Year of release"/><label value="Genre"/></box>
 		
-		<listbox align="left" id="songlist" collapsed="true">
+		<listbox align="left" class="songlist" collapsed="true">
 			<listitem label="Song 1"/>
 			<listitem label="Song 2"/>
 			<listitem label="Song 3"/>
@@ -55,10 +115,10 @@ function toggleVisibility(id) {
 			<listitem label="Song 5"/>
 		</listbox>
 	</box>
-</box>
+</box> -->
 
 
-</box>
+
 <box id="aBox" class="red" width="200">
   <button id="button" label="Add" oncommand="toggleVisibility(document.getElementById('songlist'));"/>
 </box>
