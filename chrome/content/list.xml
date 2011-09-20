@@ -1,0 +1,12 @@
+<albums>  
+  <album name="Napoleon Bonaparte" artist="male" year="1993" genre="rock">  
+			<song title="test" track="1"/>
+			<song title="test4" track="2"/>
+			<song title="test6" track="3"/>
+	</album>
+  <album name="Cleopatra" artist="female" year="1993" genre="jazz"> 
+			<song title="test1" track="1"/>
+			<song title="test2" track="2"/>
+			<song title="test3" track="3"/>
+	</album> 
+</albums>
