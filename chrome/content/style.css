@@ -2,14 +2,15 @@
 	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 	display: block;
 	font-color: #333;
-	line-height = 1.5;
+	line-height: 1.5;
+	background-color: grey;
 }
 
 .album:nth-child(odd)    { background-color:#fff; }
 .album:nth-child(even)    { background-color:#D8E7F3; }
 
 
-.album:hover {
+.albumInfo:hover {
 	background-color: green;
 }
 

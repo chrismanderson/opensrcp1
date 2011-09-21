@@ -1,0 +1,171 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="style.css" type="text/css"?>
+<window id="mainWindow" title="Hello" 
+	windowtype="main"
+	orient="vertical"
+	sizemode="normal"
+	width="400" height="600"
+ persist="screenX screenY width height"
+  xmlns:html="http://www.w3.org/1999/xhtml"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<script type="application/x-javascript" src="jquery-xul.js" />
+
+
+
+<script>
+Components.utils.import("resource://gre/modules/FileUtils.jsm");
+Components.utils.import("resource://gre/modules/NetUtil.jsm");
+
+function writeFile() {
+
+	var localFile = FileUtils.getFile("ProfD", ["data.txt"]);
+	var outputStream = Components.classes["@mozilla.org/network/file-output-stream;1"].
+	  createInstance(Components.interfaces.nsIFileOutputStream);
+	outputStream.init(localFile, 0x02|0x08|0x10, 0644, 1);
+	var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"].
+	  createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+	converter.charset = "UTF-8";
+	var data = "foo\n";
+	var inputStream = converter.convertToInputStream(data);
+	NetUtil.asyncCopy(inputStream, outputStream);
+	
+
+}
+function submitEdits() {
+
+var url = "list.xml";  
+    var request = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Components.interfaces.nsIXMLHttpRequest);  
+
+	var rootElement;
+	var responseXML;
+    request.onload = function(aEvent) {  
+		  responseXML = aEvent.target.responseXML;  
+		  rootElement = responseXML.documentElement;  
+		
+		  if (rootElement != rootElement.tagName) {  
+		    var shopElements = rootElement.getElementsByTagName("album"); 
+		 	alert(shopElements.length);
+			console.log(shopElements[0].getAttribute("artist"));
+			var localFile = FileUtils.getFile("ProfD", ["data.xml"]);
+			var outputStream = Components.classes["@mozilla.org/network/file-output-stream;1"].
+			  createInstance(Components.interfaces.nsIFileOutputStream);
+			outputStream.init(localFile, 0x02|0x08|0x10, 0644, 1);
+			var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"].
+			  createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+			converter.charset = "UTF-8";
+
+			var serializer = new XMLSerializer();
+			var xmlString = serializer.serializeToString(responseXML);
+			var data = xmlString;
+			var inputStream = converter.convertToInputStream(data);
+			NetUtil.asyncCopy(inputStream, outputStream);
+			
+		  }  
+		};
+    request.open("GET", url, true);  
+    request.send(null);
+
+	
+
+}
+
+$(document).ready(function() { 
+	// $(".album").click(function () {
+	//   	toggleVisibility(this);
+	// });
+	
+
+	
+	var songs = new Array();
+	songs[0] = "song1";
+	songs[1] = "song2";
+	
+	var album1 = new album("Hello","Goodbye","hello",songs,5);
+	var album2 = new album("Goodbye","hello","teehee",songs,5);
+});
+
+$(document).delegate('.albumInfo','click',function(){
+	toggleVisibility(this);
+});
+
+//toggles the visibility on the song list
+function toggleVisibility(id) {
+
+	// drawAlbum();
+	var list = $(id).siblings(".songlist").attr("collapsed");
+		
+	if (list == 'true') {
+		$(id).siblings(".songlist").attr('collapsed','false');
+	}
+	else {
+		$(id).siblings(".songlist").attr('collapsed','true');
+	}
+}
+
+function album(title,artist,genre,songs,rating) {
+	this.title = title;
+	this.artist = artist;
+	this.genre = genre;
+	// this.rating = rating;
+	var songlist = new Array();
+	this.songlist = songs;
+	this.rating = rating;
+}
+
+function drawAlbum() {
+	var newBoxAlbum = document.createElement("box");
+	newBoxAlbum.setAttribute('class','album');
+	newBoxAlbum.setAttribute('orient','vertical');
+	
+	var newBoxAlbumInfo = document.createElement("box");
+	newBoxAlbumInfo.setAttribute('flex','1');
+	newBoxAlbumInfo.setAttribute('label','Album2');
+	
+	newBoxAlbum.appendChild(newBoxAlbumInfo);
+	
+	
+	container = document.getElementById("albumList");
+	container.appendChild(newBoxAlbum);
+}
+
+</script>
+
+<vbox id="app" flex="1" style="overflow:auto">
+<vbox id="albumList" datasources="list.xml" ref="*" querytype="xml">
+	<template>
+		<query expr="album|song">
+			<assign var="?type" expr="local-name(.)"/>
+			<assign var="?songnum" expr="count(song)"/>  
+		</query>
+		<rule>
+			<where subject="?type" rel="equals" value="album"/>
+			<action>
+				<vbox uri="?"  class="album">
+					<hbox class="albumInfo">
+						<description class="albumName" value="?name"/><spacer flex="1"/>
+						<label class="albumArtist" value="?artist"/>
+					</hbox>
+					<hbox>
+						<label value="?year"/><label value="?genre"/><label value="?status"/><label value="?rating"/>
+					</hbox>
+					<listbox uri="?" class="songlist" align="left" rows="?songnum" collapsed="true"/>
+				</vbox>
+			</action>
+		</rule>
+		<rule parent="listbox">
+			<where subject="?type" rel="equals" value="song"/>
+			<action>
+				<listitem uri="?" label="?title"/>
+			</action>
+		</rule>
+	</template>
+</vbox>
+
+
+
+<button id="submitChanges" label="Submit" oncommand="submitEdits();"/>
+<button id="submitChanges" label="Write" oncommand="writeFile();"/>
+
+</vbox>
+</window>

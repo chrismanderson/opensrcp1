@@ -1,2 +1,7 @@
-content     cmap1    chrome/content/
-overlay chrome://browser/content/browser.xul chrome://sample/content/sample.xul
+content   cmap1                 chrome/content/ contentaccessible=yes
+skin      cmap1   classic/1.0   chrome/skin/
+locale    cmap1   en-US         chrome/locale/en-US/
+
+
+overlay   chrome://browser/content/browser.xul   chrome://cmap1/content/ff-overlay.xul
+overlay   chrome://browser/content/browser.xul   chrome://cmap1/content/cmap1.xul
