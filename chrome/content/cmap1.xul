@@ -34,8 +34,34 @@ function writeFile() {
 }
 function submitEdits() {
 
-var url = "list.xml";  
+var url = "list.xml"; 
+
+var doc = document.implementation.createDocument("", "", null);    
+  
+var albumElem1 = doc.createElement("album");  
+albumElem1.setAttribute("name", "The White Album");  
+albumElem1.setAttribute("artist", "The Beatles");  
+albumElem1.setAttribute("year", "1967");
+albumElem1.setAttribute("genre", "Pop");
+albumElem1.setAttribute("status", "platinum");
+albumElem1.setAttribute("rating", "4");
+  
+  
+var songeElem1 = doc.createElement("song");  
+songeElem1.setAttribute("title", "Eleanor Rigby");  
+songeElem1.setAttribute("track", "1");    
+albumElem1.appendChild(songeElem1);  
+
+var songeElem2 = doc.createElement("song");  
+songeElem2.setAttribute("title", "All You Need Is Love");  
+songeElem2.setAttribute("track", "2");    
+albumElem1.appendChild(songeElem2);
+  
+doc.appendChild(albumElem1);    
+
+ 
     var request = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Components.interfaces.nsIXMLHttpRequest);  
+
 
 	var rootElement;
 	var responseXML;
@@ -54,10 +80,13 @@ var url = "list.xml";
 			var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"].
 			  createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
 			converter.charset = "UTF-8";
-
+			var albums = rootElement.documentElement;
+			alert(albums);
+			albums.appendChild(doc);
 			var serializer = new XMLSerializer();
-			var xmlString = serializer.serializeToString(responseXML);
+			var xmlString = serializer.serializeToString(albums);
 			var data = xmlString;
+			alert(data);
 			var inputStream = converter.convertToInputStream(data);
 			NetUtil.asyncCopy(inputStream, outputStream);
 			
