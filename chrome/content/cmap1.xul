@@ -14,7 +14,7 @@
 
 
 <script>
-
+<![CDATA[
 
 $(document).ready(function() { 
 	
@@ -27,15 +27,15 @@ $(document).ready(function() {
 
 $(document).delegate('.albumInfo','click',function() {
 	
-	var list = $(this).siblings(".songlist").attr("collapsed");
+	var list = $(this).siblings(".songs").attr("collapsed");
 
 		
 	if (list == 'true') {
-		$(this).siblings(".songlist").attr('collapsed','false');
+		$(this).siblings(".songs").attr('collapsed','false');
 	}
 	
 	else {
-		$(this).siblings(".songlist").attr('collapsed','true');
+		$(this).siblings(".songs").attr('collapsed','true');
 	}
 });
 
@@ -43,8 +43,7 @@ function Album(album,artist,genre,rating,year,sales) {
 	this.album = album || "Album Title";
 	this.artist = artist || "Album Artist";
 	this.genre = genre || "Genre";
-	// var songlist = new Array();
-	// this.songlist = songs;
+	this.songs = new Array();
 	this.rating = rating || "Rating";
 	this.year = year || "Year";
 	this.sales = sales || "Sales";
@@ -53,7 +52,6 @@ function Album(album,artist,genre,rating,year,sales) {
 function editAlbumWindow(id) {
 	
 	var albumToBeEdited = id.parentNode;
-	alert(id.parentNode.getElementsByClassName('genre')[0].value);
 	var albumData = getAlbumInfo(albumToBeEdited);
 	// 
 	
@@ -89,20 +87,32 @@ function getAlbumInfo(albumUI) {
 	
 	var albumData = new Album();
 	
-	albumData.artist = (albumUI.getElementsByClassName('albumArtist')[0].value);
-	albumData.genre = (albumUI.getElementsByClassName('genre')[0].value);
-	albumData.album = (albumUI.getElementsByClassName('albumName')[0].value);
+	albumData.artist = albumUI.getElementsByClassName('albumArtist')[0].value;
+	albumData.genre = albumUI.getElementsByClassName('genre')[0].value;
+	albumData.album = albumUI.getElementsByClassName('albumName')[0].value;
 	albumData.rating = parseInt((albumUI.getElementsByClassName('rating')[0].value));
-	albumData.year = (albumUI.getElementsByClassName('year')[0].value);
-	albumData.sales = (albumUI.getElementsByClassName('sales')[0].value);
+	albumData.year = albumUI.getElementsByClassName('year')[0].value;
+	albumData.sales = albumUI.getElementsByClassName('sales')[0].value;
+
+	albumData.songs = getSongList(albumUI.getElementsByClassName('songs')[0]);
 	
-	var songlList = new Array();
 	return albumData;
 }
 
+function getSongList(songsNode) {
+	var songArray = new Array(songsNode.childNodes.length - 2);
+	
+	for (var i = 2; i < songArray.length + 2; i++) {
+		songArray[i-2] = songsNode.childNodes[i].lastChild.getAttribute('label');
+	}
+	
+	return songArray;
+}
+]]>
 </script>
 
 <vbox id="app" flex="1" style="overflow:auto">
+
 <vbox id="albumList" datasources="list.xml" ref="*" querytype="xml">
 	<template>
 		<query expr="album|song">
@@ -121,23 +131,34 @@ function getAlbumInfo(albumUI) {
 						<label class="year" value="?year"/><label class="genre" value="?genre"/><label class="sales"  value="?status"/><label class="rating" value="?rating"/>
 						
 					</hbox>
-					<listbox editable="true" uri="?" class="songlist" align="left" rows="?songnum" collapsed="true"/><button class="edit" label="Edit" oncommand="editAlbumWindow(this);"/>
+					<listbox editable="true" uri="?" class="songs" align="left" rows="?songnum">
+						<listhead>
+				    		<listheader label="Track"/>
+				    		<listheader label="Song Title"/>
+				  		</listhead>
+						<listcols>
+							<listcol />
+							<listcol flex="1"/>
+						</listcols>
+					</listbox>
+					<button class="edit" label="Edit" oncommand="editAlbumWindow(this);"/>
 				</vbox>
 			</action>
 		</rule>
+		
 		<rule parent="listbox">
 			<where subject="?type" rel="equals" value="song"/>
 			<action>
-				<listitem uri="?" label="?title"/>
+				<listitem uri="?" >
+					<listcell uri="?" label="?track" class="trackNum"/>
+					<listcell uri="?" label="?title" class="trackTitle"/>
+				</listitem>
 			</action>
 		</rule>
 	</template>
 </vbox>
 
-
-
-<button id="submitChanges" label="Submit" oncommand="submitEdits();"/>
-<button id="submitChanges" label="Add Album" oncommand="newAlbumBox();"/>
+<button id="submitChanges" label="New Album" oncommand="newAlbumBox();"/>
 
 </vbox>
 </window>

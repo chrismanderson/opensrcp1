@@ -15,6 +15,7 @@
   xmlns:html="http://www.w3.org/1999/xhtml"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 <script>
+<![CDATA[
 	var initialAlbum = window.arguments[0];
 	var returnValues = window.arguments[1];
 	
@@ -34,10 +35,62 @@
 		document.getElementById("yearText").value = initialAlbum.year;
 		document.getElementById("salesText").value = initialAlbum.sales;
 		document.getElementById("ratingText").value = initialAlbum.rating;
+		alert(initialAlbum.songs[0]);
 		
-	
+		// document.getElementById("song1").value = initialAlbum.songs[0];
+
+		if (!initialAlbum.songs[0]) {
+			document.getElementById("track.1").value = "Track 1";
+		}
+		
+		else {
+			document.getElementById("track.1").value = initialAlbum.songs[0];
+			// var newTrackBox, newTrackLabel;
+			// var editPane = document.getElementById("gridRows");
+			for (var i = 1; i < initialAlbum.songs.length; i++) {
+					// var row = document.createElement("row");
+					// 
+					// newTrackBox = document.getElementById("track.1").cloneNode(true);
+					// newTrackLabel = document.getElementById("trackLabel.1").cloneNode(true);
+					// 
+					// newTrackBox.setAttribute('id',"track." + (i+1));
+					// newTrackBox.value = initialAlbum.songs[i];
+					// newTrackLabel.setAttribute('id',"trackLabel." + (i+1));
+					// newTrackLabel.setAttribute('control',"track." + (i+1));
+					// newTrackLabel.value = "Track " + (i+1);
+					// row.appendChild(newTrackLabel);
+					// row.appendChild(newTrackBox);
+					// 
+					// editPane.appendChild(row);
+					
+					addTrack(initialAlbum.songs[i],i+1);
+			}
+		}
+		
+			
 		returnValues = captureValues(returnValues);	
 	}
+	
+	function addTrack(trackName,trackNum) {
+		var newTrackBox, newTrackLabel;
+		var editPane = document.getElementById("gridRows");
+		var row = document.createElement("row");
+		
+		newTrackBox = document.getElementById("track.1").cloneNode(true);
+		newTrackLabel = document.getElementById("trackLabel.1").cloneNode(true);
+		
+		newTrackBox.setAttribute('id',"track." + trackNum);
+		newTrackBox.value = trackName;
+		newTrackLabel.setAttribute('id',"trackLabel." + trackNum);
+		newTrackLabel.setAttribute('control',"track." + trackNum);
+		newTrackLabel.value = "Track " + trackNum;
+		row.appendChild(newTrackLabel);
+		row.appendChild(newTrackBox);
+		
+		editPane.appendChild(row);
+	}
+	
+	
 	
 	function captureValues(dataArray) {
 
@@ -47,23 +100,65 @@
 		dataArray.year = document.getElementById('yearText').value;
 		dataArray.sales = document.getElementById('salesText').value;
 		dataArray.rating = document.getElementById('ratingText').value;
+		dataArray.songs[0] = "hello";
 		
 		return dataArray;
 	}
 
-	
+]]>
 </script>
-	<label control="albumText" value="Album Name"/>  
-	<textbox id="albumText"/>  
-	<label control="artistText" value="Artist Name"/>  
-	<textbox id="artistText" />
-	<label control="genreText" value="Genre"/>  
-	<textbox id="genreText"/>  
-	<label control="yearText" value="Year"/>  
-	<textbox id="yearText" />
-	<label control="salesText" value="Sales status"/>  
-	<textbox id="salesText"/>  
-	<label control="ratingText" value="Rating"/>  
-	<textbox type="number" id="ratingText" />
-
+	
+	<groupbox>
+		<caption label="Songs"/>
+		<grid id="editPane">
+			<columns>
+				<column flex="1"/>
+				<column flex="2"/>
+			</columns>
+			<rows id="gridRows">
+				<row>
+					<label control="albumText" value="Album Name"/>  
+					<textbox id="albumText"/>
+				</row>	
+				
+				<row>
+					<label control="artistText" value="Artist Name"/>  
+					<textbox id="artistText" />
+				</row>
+				
+				<row>	
+					<label control="genreText" value="Genre"/>  
+					<textbox id="genreText"/>  
+				</row>
+				<row>	
+					<label control="yearText" value="Year"/>  
+					<textbox id="yearText" />
+				</row>
+				
+				<row>
+					<label control="salesText" value="Sales awards"/>  
+			        <menulist id="salesText">
+			          <menupopup>
+			            <menuitem label="None" value="None"/>
+			            <menuitem label="Silver" value="Silver"/>
+			            <menuitem label="Gold" value="Gold"/>
+						<menuitem label="Platinum" value="Platinum"/>
+						<menuitem label="Diamond" value="Diamond"/>
+			          </menupopup>
+			        </menulist>
+				</row> 
+				
+				<row>
+					<label control="ratingText" value="Rating"/>  
+					<textbox type="number" id="ratingText" min="1" max="5"/>
+				</row>
+				
+				<row>		
+					<label id="trackLabel.1" control="track.1" value="Track 1"/>  
+					<textbox id="track.1"/>  
+				</row>
+				
+			</rows>
+		</grid>
+	</groupbox>
 </dialog>
