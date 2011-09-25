@@ -6,11 +6,15 @@
 	sizemode="normal"
 	width="400" height="600"
 	onload="init()"
-	buttons="accept,cancel"
+	buttons="accept,cancel,extra1,extra2"
 	buttonlabelcancel="Cancel"
 	buttonlabelaccept="Save"
+	buttonlabelextra1="Add Track"
+	buttonlabelextra2="Remove Track"
 	ondialogaccept="return doOK();"
 	ondialogcancel="return doCancel();"
+	ondialogextra1="addTrack('',numOfTracks+1);"
+	ondialogextra2="removeTrack(numOfTracks)"
  persist="screenX screenY width height"
   xmlns:html="http://www.w3.org/1999/xhtml"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
@@ -18,6 +22,8 @@
 <![CDATA[
 	var initialAlbum = window.arguments[0];
 	var returnValues = window.arguments[1];
+	
+	var numOfTracks = 1;
 	
 	function doCancel() {
 	}
@@ -35,9 +41,6 @@
 		document.getElementById("yearText").value = initialAlbum.year;
 		document.getElementById("salesText").value = initialAlbum.sales;
 		document.getElementById("ratingText").value = initialAlbum.rating;
-		alert(initialAlbum.songs[0]);
-		
-		// document.getElementById("song1").value = initialAlbum.songs[0];
 
 		if (!initialAlbum.songs[0]) {
 			document.getElementById("track.1").value = "Track 1";
@@ -45,29 +48,11 @@
 		
 		else {
 			document.getElementById("track.1").value = initialAlbum.songs[0];
-			// var newTrackBox, newTrackLabel;
-			// var editPane = document.getElementById("gridRows");
+
 			for (var i = 1; i < initialAlbum.songs.length; i++) {
-					// var row = document.createElement("row");
-					// 
-					// newTrackBox = document.getElementById("track.1").cloneNode(true);
-					// newTrackLabel = document.getElementById("trackLabel.1").cloneNode(true);
-					// 
-					// newTrackBox.setAttribute('id',"track." + (i+1));
-					// newTrackBox.value = initialAlbum.songs[i];
-					// newTrackLabel.setAttribute('id',"trackLabel." + (i+1));
-					// newTrackLabel.setAttribute('control',"track." + (i+1));
-					// newTrackLabel.value = "Track " + (i+1);
-					// row.appendChild(newTrackLabel);
-					// row.appendChild(newTrackBox);
-					// 
-					// editPane.appendChild(row);
-					
-					addTrack(initialAlbum.songs[i],i+1);
+				addTrack(initialAlbum.songs[i],i+1);
 			}
 		}
-		
-			
 		returnValues = captureValues(returnValues);	
 	}
 	
@@ -88,10 +73,27 @@
 		row.appendChild(newTrackBox);
 		
 		editPane.appendChild(row);
+		numOfTracks++;
 	}
 	
+	function removeTrack(numToRemove) {
+		if (numToRemove > 1) {
+			document.getElementById("gridRows").removeChild(document.getElementById("gridRows").lastChild); 
+			numOfTracks--;
+		}	
+	}
 	
-	
+	function getSongs() {
+		var returnSongs = new Array(numOfTracks);
+		var editPane = document.getElementById("gridRows");
+		
+		for (var i = numOfTracks; i > 0; i--) {
+			returnSongs[i-1] = document.getElementById('track.' + i).value;
+		}
+		
+		return returnSongs;
+	}
+		
 	function captureValues(dataArray) {
 
 		dataArray.album = document.getElementById('albumText').value;
@@ -100,8 +102,8 @@
 		dataArray.year = document.getElementById('yearText').value;
 		dataArray.sales = document.getElementById('salesText').value;
 		dataArray.rating = document.getElementById('ratingText').value;
-		dataArray.songs[0] = "hello";
-		
+		dataArray.songs = getSongs();
+
 		return dataArray;
 	}
 

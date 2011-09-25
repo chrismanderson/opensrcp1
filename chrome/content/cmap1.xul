@@ -61,6 +61,7 @@ function editAlbumWindow(id) {
 	window.openDialog("chrome://cmap1/content/editWindow.xul", "newwindow", "modal,chrome",albumData,returnAlbum);
 	
 	setAlbumInfo(albumToBeEdited,returnAlbum);
+	alert(returnAlbum.songs[4]);
 }
 
 function newAlbumBox() {
