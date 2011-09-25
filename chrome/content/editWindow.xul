@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="style.css" type="text/css"?>
+<dialog id="editWindow" title="Edit" 
+	windowtype="main"
+	orient="vertical"
+	sizemode="normal"
+	width="400" height="600"
+	onload="init()"
+	buttons="accept,cancel"
+	buttonlabelcancel="Cancel"
+	buttonlabelaccept="Save"
+	ondialogaccept="return doOK();"
+	ondialogcancel="return doCancel();"
+ persist="screenX screenY width height"
+  xmlns:html="http://www.w3.org/1999/xhtml"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<script>
+	var initialAlbum = window.arguments[0];
+	var returnValues = window.arguments[1];
+	
+	function doCancel() {
+	}
+	
+	function doOK() {
+		returnValues = captureValues(returnValues);
+		window.close();
+	}
+	
+	function init() {
+		
+		document.getElementById("albumText").value = initialAlbum.album;
+		document.getElementById("artistText").value = initialAlbum.artist;
+		document.getElementById("genreText").value = initialAlbum.genre;
+		document.getElementById("yearText").value = initialAlbum.year;
+		document.getElementById("salesText").value = initialAlbum.sales;
+		document.getElementById("ratingText").value = initialAlbum.rating;
+		
+	
+		returnValues = captureValues(returnValues);	
+	}
+	
+	function captureValues(dataArray) {
+
+		dataArray.album = document.getElementById('albumText').value;
+		dataArray.artist = document.getElementById('artistText').value;
+		dataArray.genre = document.getElementById('genreText').value;
+		dataArray.year = document.getElementById('yearText').value;
+		dataArray.sales = document.getElementById('salesText').value;
+		dataArray.rating = document.getElementById('ratingText').value;
+		
+		return dataArray;
+	}
+
+	
+</script>
+	<label control="albumText" value="Album Name"/>  
+	<textbox id="albumText"/>  
+	<label control="artistText" value="Artist Name"/>  
+	<textbox id="artistText" />
+	<label control="genreText" value="Genre"/>  
+	<textbox id="genreText"/>  
+	<label control="yearText" value="Year"/>  
+	<textbox id="yearText" />
+	<label control="salesText" value="Sales status"/>  
+	<textbox id="salesText"/>  
+	<label control="ratingText" value="Rating"/>  
+	<textbox type="number" id="ratingText" />
+
+</dialog>

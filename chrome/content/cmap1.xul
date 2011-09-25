@@ -14,148 +14,90 @@
 
 
 <script>
-Components.utils.import("resource://gre/modules/FileUtils.jsm");
-Components.utils.import("resource://gre/modules/NetUtil.jsm");
 
-function writeFile() {
-
-	var localFile = FileUtils.getFile("ProfD", ["data.txt"]);
-	var outputStream = Components.classes["@mozilla.org/network/file-output-stream;1"].
-	  createInstance(Components.interfaces.nsIFileOutputStream);
-	outputStream.init(localFile, 0x02|0x08|0x10, 0644, 1);
-	var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"].
-	  createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
-	converter.charset = "UTF-8";
-	var data = "foo\n";
-	var inputStream = converter.convertToInputStream(data);
-	NetUtil.asyncCopy(inputStream, outputStream);
-	
-
-}
-function submitEdits() {
-
-var url = "list.xml"; 
-
-var doc = document.implementation.createDocument("", "", null);    
-  
-var albumElem1 = doc.createElement("album");  
-albumElem1.setAttribute("name", "The White Album");  
-albumElem1.setAttribute("artist", "The Beatles");  
-albumElem1.setAttribute("year", "1967");
-albumElem1.setAttribute("genre", "Pop");
-albumElem1.setAttribute("status", "platinum");
-albumElem1.setAttribute("rating", "4");
-  
-  
-var songeElem1 = doc.createElement("song");  
-songeElem1.setAttribute("title", "Eleanor Rigby");  
-songeElem1.setAttribute("track", "1");    
-albumElem1.appendChild(songeElem1);  
-
-var songeElem2 = doc.createElement("song");  
-songeElem2.setAttribute("title", "All You Need Is Love");  
-songeElem2.setAttribute("track", "2");    
-albumElem1.appendChild(songeElem2);
-  
-doc.appendChild(albumElem1);    
-
- 
-    var request = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Components.interfaces.nsIXMLHttpRequest);  
-
-
-	var rootElement;
-	var responseXML;
-    request.onload = function(aEvent) {  
-		  responseXML = aEvent.target.responseXML;  
-		  rootElement = responseXML.documentElement;  
-		
-		  if (rootElement != rootElement.tagName) {  
-		    var shopElements = rootElement.getElementsByTagName("album"); 
-		 	alert(shopElements.length);
-			console.log(shopElements[0].getAttribute("artist"));
-			var localFile = FileUtils.getFile("ProfD", ["data.xml"]);
-			var outputStream = Components.classes["@mozilla.org/network/file-output-stream;1"].
-			  createInstance(Components.interfaces.nsIFileOutputStream);
-			outputStream.init(localFile, 0x02|0x08|0x10, 0644, 1);
-			var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"].
-			  createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
-			converter.charset = "UTF-8";
-			var albums = rootElement.documentElement;
-			alert(albums);
-			albums.appendChild(doc);
-			var serializer = new XMLSerializer();
-			var xmlString = serializer.serializeToString(albums);
-			var data = xmlString;
-			alert(data);
-			var inputStream = converter.convertToInputStream(data);
-			NetUtil.asyncCopy(inputStream, outputStream);
-			
-		  }  
-		};
-    request.open("GET", url, true);  
-    request.send(null);
-
-	
-
-}
 
 $(document).ready(function() { 
-	// $(".album").click(function () {
-	//   	toggleVisibility(this);
-	// });
-	
-
 	
 	var songs = new Array();
 	songs[0] = "song1";
 	songs[1] = "song2";
 	
-	var album1 = new album("Hello","Goodbye","hello",songs,5);
-	var album2 = new album("Goodbye","hello","teehee",songs,5);
+	var album2 = new Album("Goodbye","hello","teehee",songs,5);
 });
 
-$(document).delegate('.albumInfo','click',function(){
-	toggleVisibility(this);
-});
+$(document).delegate('.albumInfo','click',function() {
+	
+	var list = $(this).siblings(".songlist").attr("collapsed");
 
-//toggles the visibility on the song list
-function toggleVisibility(id) {
-
-	// drawAlbum();
-	var list = $(id).siblings(".songlist").attr("collapsed");
 		
 	if (list == 'true') {
-		$(id).siblings(".songlist").attr('collapsed','false');
+		$(this).siblings(".songlist").attr('collapsed','false');
 	}
+	
 	else {
-		$(id).siblings(".songlist").attr('collapsed','true');
+		$(this).siblings(".songlist").attr('collapsed','true');
 	}
+});
+
+function Album(album,artist,genre,rating,year,sales) {
+	this.album = album || "Album Title";
+	this.artist = artist || "Album Artist";
+	this.genre = genre || "Genre";
+	// var songlist = new Array();
+	// this.songlist = songs;
+	this.rating = rating || "Rating";
+	this.year = year || "Year";
+	this.sales = sales || "Sales";
 }
 
-function album(title,artist,genre,songs,rating) {
-	this.title = title;
-	this.artist = artist;
-	this.genre = genre;
-	// this.rating = rating;
-	var songlist = new Array();
-	this.songlist = songs;
-	this.rating = rating;
+function editAlbumWindow(id) {
+	
+	var albumToBeEdited = id.parentNode;
+	alert(id.parentNode.getElementsByClassName('genre')[0].value);
+	var albumData = getAlbumInfo(albumToBeEdited);
+	// 
+	
+	// var testAlbum = new Album("Hello","Goodbye","hello",5,1963,"gold");
+	var returnAlbum = new Album();
+	// 
+	window.openDialog("chrome://cmap1/content/editWindow.xul", "newwindow", "modal,chrome",albumData,returnAlbum);
+	
+	setAlbumInfo(albumToBeEdited,returnAlbum);
 }
 
-function drawAlbum() {
-	var newBoxAlbum = document.createElement("box");
-	newBoxAlbum.setAttribute('class','album');
-	newBoxAlbum.setAttribute('orient','vertical');
+function newAlbumBox() {
 	
-	var newBoxAlbumInfo = document.createElement("box");
-	newBoxAlbumInfo.setAttribute('flex','1');
-	newBoxAlbumInfo.setAttribute('label','Album2');
-	
-	newBoxAlbum.appendChild(newBoxAlbumInfo);
-	
-	
-	container = document.getElementById("albumList");
+	var newBoxAlbum = document.getElementsByClassName("album")[0].cloneNode(true);
+	var album1 = new Album();
+	setAlbumInfo(newBoxAlbum,album1);
+
+	var container = document.getElementById("albumList");
 	container.appendChild(newBoxAlbum);
+}
+
+function setAlbumInfo(albumUI,albumData) {
+
+	albumUI.getElementsByClassName('genre')[0].setAttribute('value',albumData.genre);
+	albumUI.getElementsByClassName('albumName')[0].setAttribute('value',albumData.album);
+	albumUI.getElementsByClassName('rating')[0].setAttribute('value',albumData.rating);
+	albumUI.getElementsByClassName('albumArtist')[0].setAttribute('value',albumData.artist);
+	albumUI.getElementsByClassName('year')[0].setAttribute('value',albumData.year);
+	albumUI.getElementsByClassName('sales')[0].setAttribute('value',albumData.sales);
+}
+
+function getAlbumInfo(albumUI) {
+	
+	var albumData = new Album();
+	
+	albumData.artist = (albumUI.getElementsByClassName('albumArtist')[0].value);
+	albumData.genre = (albumUI.getElementsByClassName('genre')[0].value);
+	albumData.album = (albumUI.getElementsByClassName('albumName')[0].value);
+	albumData.rating = parseInt((albumUI.getElementsByClassName('rating')[0].value));
+	albumData.year = (albumUI.getElementsByClassName('year')[0].value);
+	albumData.sales = (albumUI.getElementsByClassName('sales')[0].value);
+	
+	var songlList = new Array();
+	return albumData;
 }
 
 </script>
@@ -170,15 +112,16 @@ function drawAlbum() {
 		<rule>
 			<where subject="?type" rel="equals" value="album"/>
 			<action>
-				<vbox uri="?"  class="album">
+				<vbox uri="?"  class="album" >
 					<hbox class="albumInfo">
 						<description class="albumName" value="?name"/><spacer flex="1"/>
-						<label class="albumArtist" value="?artist"/>
+						<description class="albumArtist" value="?artist"/>
 					</hbox>
 					<hbox>
-						<label value="?year"/><label value="?genre"/><label value="?status"/><label value="?rating"/>
+						<label class="year" value="?year"/><label class="genre" value="?genre"/><label class="sales"  value="?status"/><label class="rating" value="?rating"/>
+						
 					</hbox>
-					<listbox uri="?" class="songlist" align="left" rows="?songnum" collapsed="true"/>
+					<listbox editable="true" uri="?" class="songlist" align="left" rows="?songnum" collapsed="true"/><button class="edit" label="Edit" oncommand="editAlbumWindow(this);"/>
 				</vbox>
 			</action>
 		</rule>
@@ -194,7 +137,7 @@ function drawAlbum() {
 
 
 <button id="submitChanges" label="Submit" oncommand="submitEdits();"/>
-<button id="submitChanges" label="Write" oncommand="writeFile();"/>
+<button id="submitChanges" label="Add Album" oncommand="newAlbumBox();"/>
 
 </vbox>
 </window>

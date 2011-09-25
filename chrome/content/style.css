@@ -9,7 +9,15 @@
 .album:nth-child(odd)    { background-color:#fff; }
 .album:nth-child(even)    { background-color:#D8E7F3; }
 
+button.edit {
+	font-size: 20px;
+	display: hidden;
+}
 
+button.edit:hover {
+	font-size: 20px;
+	display: inline;
+}
 .albumInfo:hover {
 	background-color: green;
 }
