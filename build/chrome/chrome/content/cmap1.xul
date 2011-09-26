@@ -23,34 +23,35 @@
 				<action>
 					<vbox uri="?" class="album">
 						<hbox>
-							<hbox flex="1"  class="albumInfo" min-width="400">
-								<vbox align="left" style="min-width: 200px;">
+							<hbox flex="1" align="center" class="albumInfo">
+								<vbox align="left">
 									<description class="albumName" value="?name"/>
 									<label class="albumArtist" value="?artist"/>
 								</vbox>
-								
-								<hbox align="right" flex="1">
+								<spacer flex="1"/>
+								<hbox flex="1">
 									<vbox>
 										<label value="Release: "/>
 										<label value="Genre: "/>
 									</vbox>
-									<vbox class="valueInfo" style="min-width: 100px;">
+									<vbox id="valueInfo">
 										<label value="?year" class="year"/>
 										<label value="?genre" class="genre"/>
 									</vbox>
 								</hbox>
-								<hbox align="right">
+								<hbox>
 									<vbox>
 										<label value="Sales: "/>
-										<label value="Rating: "/>
+										<label value="Number of Stars: "/>
 									</vbox>
-									<vbox class="valueInfo" style="min-width: 100px;">
+									
+									<vbox id="valueInfo">
 										<label value="?status" class="sales"/>
 										<label value="?rating" class="rating"/>
 									</vbox>
-								</hbox>	
+								</hbox>		
 							</hbox>
-					
+							<spacer flex="1"/>
 							
 							<!-- Controls to edit the album -->
 							<vbox align="right">
@@ -60,7 +61,7 @@
 							
 						</hbox>
 						<!-- Declares the song list -->
-						<listbox uri="?" class="songs" align="left" rows="?songnum" flex="1" collapsed="true"/>
+						<listbox uri="?" class="songs" align="left" rows="?songnum" flex="1"/>
 					</vbox>
 				</action>
 			</rule>

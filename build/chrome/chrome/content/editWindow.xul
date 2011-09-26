@@ -147,32 +147,17 @@
 			<rows id="gridRows">
 				<row>
 					<label control="albumText" value="Album Name"/>  
-					<textbox id="albumText"
-					         newlines="stripsurroundingwhitespace"
-							 maxLength="200"/>
+					<textbox id="albumText"/>
 				</row>	
 				
 				<row>
 					<label control="artistText" value="Artist Name"/>  
-					<textbox id="artistText" 
-							 newlines="stripsurroundingwhitespace"
-							 maxLength="200"/>
+					<textbox id="artistText" />
 				</row>
 				
 				<row>	
 					<label control="genreText" value="Genre"/>  
-					<menulist id="genreText">
-			          <menupopup>
-			            <menuitem label="Classical" value="Classical"/>
-			            <menuitem label="Jazz" value="Jazz"/>
-						<menuitem label="Hip-hop" value="Hip-hop"/>
-						<menuitem label="Pop" value="Pop"/>
-						<menuitem label="Rap" value="Rap"/>
-						<menuitem label="Rock" value="Rock"/>
-						<menuitem label="Soundtrack" value="Soundtrack"/>
-						<menuitem label="Other" value="Other"/>
-			          </menupopup>
-			        </menulist>
+					<textbox id="genreText"/>  
 				</row>
 				
 				<!-- Restricts year data -->

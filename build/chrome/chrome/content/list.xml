@@ -1,20 +1,20 @@
 <!-- beginnings of creating an xml object to store the album values -->
 <albums>  
-  <album name="Under the Table and Dreaming" artist="Dave Matthews Band" year="1993" genre="Rock" status="Platinum" rating="4">  
+  <album name="Under the Table and Dreaming" artist="Dave Matthews Band" year="1993" genre="rock" status="Platinum" rating="4">  
 			<song title="Before These Crowded Streets" track="1"/>
 			<song title="Ants Marching" track="2"/>
 			<song title="Satellite" track="3"/>
 			<song title="Crash" track="4"/>
 			<song title="Typical Situation" track="5"/>
 	</album>
-  <album name="Jurassic Park" artist="John Williams" year="1993" genre="Soundtrack" status="Gold" rating="5"> 
+  <album name="Jurassic Park" artist="John Williams" year="1993" genre="soundtrack" status="Gold" rating="5"> 
 			<song title="Journey to the Island" track="1"/>
 			<song title="Welcome to Jurassic Park" track="2"/>
 			<song title="The Raptor Attack" track="3"/>
 			<song title="Petticoat Lane" track="4"/>
 			<song title="Incident at Isla Nublar" track="5"/>
 	</album> 
-	<album name="The Wall" artist="Pink Floyd" year="1979" genre="Soundtrack" status="Platinum" rating="5"> 
+	<album name="The Wall" artist="Pink Floyd" year="1979" genre="soundtrack" status="Platinum" rating="5"> 
 			<song title="In the Flesh" track="1"/>
 			<song title="The Thin Ice" track="2"/>
 			<song title="Another Brick in the Wall" track="3"/>

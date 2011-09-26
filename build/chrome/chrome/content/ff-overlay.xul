@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://cmap1/skin/overlay.css" type="text/css"?>
+<!DOCTYPE overlay SYSTEM "chrome://cmap1/locale/overlay.dtd">
+<overlay id="cmap1-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <script src="overlay.js"/>
+  <script src="ff-overlay.js"/>
+
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="cmap1-strings" src="chrome://cmap1/locale/overlay.properties"/>
+  </stringbundleset>
+
+  <menupopup id="menu_ToolsPopup">
+    <menuitem id="cmap1-hello" label="&cmap1.label;"
+              oncommand="cmap1.onMenuItemCommand(event);"/>
+  </menupopup>
+
+
+
+
+</overlay>

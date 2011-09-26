@@ -1,0 +1,7 @@
+content cmap1 jar:chrome/cmap1.jar!/chrome/content/ contentaccessible=yes
+skin cmap1 classic/1.0 jar:chrome/cmap1.jar!/chrome/skin/
+locale cmap1 en-US jar:chrome/cmap1.jar!/chrome/locale/en-US/
+
+
+overlay   chrome://browser/content/browser.xul   chrome://cmap1/content/ff-overlay.xul
+overlay   chrome://browser/content/browser.xul   chrome://cmap1/content/cmap1.xul
